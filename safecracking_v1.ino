@@ -123,14 +123,14 @@ void goToPosition(){ // walks the motor to a position then stops it
   Serial.println(homePos);
   Serial.print("count: ");
   Serial.println(count);
-  if(realPos + homePos > count){ // if a higher than encoder value input, turn CW
+  if(realPos > count){ // if a higher than encoder value input, turn CW
     CWMotor();
     digitalWrite(6, HIGH);
     while(realPos > count){
       slowDown();
     }
   }
-  if(realPos + homePos < count){ // if a lower than encoder value input turn CCW
+  if(realPos < count){ // if a lower than encoder value input turn CCW
     CCWMotor();
     digitalWrite(6, LOW);
     while(realPos < count){
@@ -214,12 +214,10 @@ void userMenu(){
         dialPos = Serial.parseInt();
         Serial.print("Dial position: ");
         Serial.println(dialPos);
-        realPos = dialPos * 84;
       }
       else if(incoming == 'h'){ // go to home location
         Serial.println("Going Home");
         goHome();
-        realPos = dialPos * 84;
       }
       else if(incoming == 's'){ // set the home location
         Serial.println("Setting Home Location");
@@ -247,6 +245,7 @@ void userMenu(){
         }
       }
      Serial.println(" ");
+     realPos = dialPos * 84;
      goToPosition();
   }
 }
